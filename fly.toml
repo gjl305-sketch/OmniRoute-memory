@@ -24,9 +24,15 @@ primary_region = 'sin'
 [http_service]
   internal_port = 20128
   force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 1
+  # Starts and stops are owned by the off-hours schedule in
+  # gjl305-sketch/fibstation-equities (.github/workflows/fly-offhours.yml),
+  # which runs this app on the same window as the Fib Station server.
+  # Incoming requests must not wake a scheduled-off machine, and the proxy
+  # must not idle-stop it during the window, because nothing would restart
+  # it until the next scheduled start.
+  auto_stop_machines = 'off'
+  auto_start_machines = false
+  min_machines_running = 0
   processes = ['app']
 
 [[vm]]
